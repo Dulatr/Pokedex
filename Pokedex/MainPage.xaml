@@ -1,0 +1,121 @@
+﻿<Page
+    x:Class="Pokedex.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Pokedex"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ViewModels="using:Pokedex.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Text Search box -->
+        <Viewbox Grid.Column="3" Grid.ColumnSpan="4"
+                 Stretch="Uniform"
+                 Margin="0 14 0 14">
+            <AutoSuggestBox x:Name="SearchBox" 
+                            Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ItemsSource="{Binding Suggestions}"
+                            TextMemberPath="Identifier"
+                            QueryIcon="Find"
+                            Width="180" PlaceholderText=" Search...">
+                <AutoSuggestBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Identifier}"/>
+                    </DataTemplate>
+                </AutoSuggestBox.ItemTemplate>
+            </AutoSuggestBox>
+        </Viewbox>
+        
+        <!-- Search Button -->
+        <!--<Viewbox Grid.Column="7"
+                 Stretch="Uniform"
+                 Margin="0 14 0 14">
+            <Button x:Name="SearchButton" Command="{Binding PressedSearch}">Search</Button>
+        </Viewbox>-->
+        
+        <!-- Pokemon View -->
+        <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6">
+            <controls:TileControl>
+            </controls:TileControl>
+        </Viewbox>
+
+        <!-- Pokemon Information  -->
+        <Viewbox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="3">
+            <StackPanel>
+                <controls:HeaderedContentControl Orientation="Horizontal">
+                    <controls:HeaderedContentControl.Header>
+                        Name:
+                    </controls:HeaderedContentControl.Header>
+                    <TextBlock Text="{Binding Creature.Identifier}"/>
+                </controls:HeaderedContentControl>
+                <controls:HeaderedContentControl Orientation="Horizontal">
+                    <controls:HeaderedContentControl.Header>
+                        ID:
+                    </controls:HeaderedContentControl.Header>
+                    <TextBlock Text="{Binding Creature.ID}"/>
+                </controls:HeaderedContentControl>
+                <controls:HeaderedContentControl Orientation="Horizontal">
+                    <controls:HeaderedContentControl.Header>
+                        Base Experience: 
+                    </controls:HeaderedContentControl.Header>
+                    <TextBlock Text="{Binding Creature.Base_Experience}"/>
+                </controls:HeaderedContentControl>
+                <controls:HeaderedContentControl Orientation="Horizontal">
+                    <controls:HeaderedContentControl.Header>
+                        Type:
+                    </controls:HeaderedContentControl.Header>
+                    <TextBlock Text="{Binding PokemonType}"/>
+                </controls:HeaderedContentControl>
+            </StackPanel>
+        </Viewbox>
+
+        <!-- D-Pad -->
+        <Viewbox Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            
+        </Viewbox>
+
+        <!-- A Button -->
+        <Viewbox Grid.Column="8" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                 Stretch="Uniform"
+                 Margin="14">
+            <Button x:Name="A_Button" Command="{Binding PressedA}">A</Button>
+        </Viewbox>
+        
+        <!-- B-Button -->
+        <Viewbox Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                 Stretch="Uniform"
+                 Margin="14">
+            <Button x:Name="B_Button" Command="{Binding PressedB}">B</Button>
+        </Viewbox>
+        
+    </Grid>
+
+</Page>
