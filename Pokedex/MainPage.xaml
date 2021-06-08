@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPressedForegroundThemeBrush}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -53,18 +53,17 @@
                 </AutoSuggestBox.ItemTemplate>
             </AutoSuggestBox>
         </Viewbox>
-        
-        <!-- Search Button -->
-        <!--<Viewbox Grid.Column="7"
-                 Stretch="Uniform"
-                 Margin="0 14 0 14">
-            <Button x:Name="SearchButton" Command="{Binding PressedSearch}">Search</Button>
-        </Viewbox>-->
-        
+
         <!-- Pokemon View -->
-        <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6">
-            <controls:TileControl>
-            </controls:TileControl>
+        <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6"
+                 Margin="7">
+            <!--<controls:TileControl ImageSource="Assets/fatpikachu.jpg"
+                                  IsAnimated="True">
+                <FlipView>
+                    <Border/>
+                </FlipView>
+            </controls:TileControl>-->
+            <Image Source="{Binding SpriteURL}"/>
         </Viewbox>
 
         <!-- Pokemon Information  -->

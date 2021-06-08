@@ -99,6 +99,23 @@ namespace Pokedex.DAO
             return pokeList;
         }
 
+        public string getSprite(int ID = 0)
+        {
+            //if (ID == 0)
+            //{
+            //    return "";
+            //}
+
+            //var _pokemonResource = ApiClient.GetResourceAsync<PokeApiNet.Pokemon>(ID);
+            //var results = _pokemonResource.Result;
+            //var sprites = results.Sprites;
+            //string url = sprites.FrontDefault;
+            //if (_pokemonResource != null)
+            //    return _pokemonResource.Result.Sprites.FrontDefault;
+
+            return "Assets/fatpikachu.jpg";
+        }
+
         /// <summary>
         /// Return the type identifier of a pokemon with given ID. 
         /// No ID provided will return empty string.
@@ -127,7 +144,7 @@ namespace Pokedex.DAO
                    WHERE pokemon.id={ID};"
             );
 
-            if (typeClass == null)
+            if (typeClass == null || typeClass.Count == 0)
                 return "";
             else if (typeClass.Count > 1)
                 return $" {typeClass[0].Identifier} / {typeClass[1].Identifier}";
@@ -163,7 +180,8 @@ namespace Pokedex.DAO
                         Weight = _creature.Weight,
                         Base_Experience = _creature.BaseExperience,
                         Order = _creature.Order,
-                        Is_Default = _creature.IsDefault
+                        Is_Default = _creature.IsDefault,
+                        Sprite = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{_creature.Id}.png"
                     });                    
                 }                 
             }

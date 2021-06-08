@@ -13,8 +13,18 @@ namespace Pokedex.ViewModels
 
         public MainPageVM()
         {
-            Creature = App.Servicer.getAPokemon(_index);
-            PokemonType = App.Servicer.getPokemonTypeClass(_index);
+            try
+            {
+                Creature = App.Servicer.getAPokemon(_index);
+                PokemonType = App.Servicer.getPokemonTypeClass(_index);
+                SpriteURL = Creature.Sprite;
+            }
+            catch
+            {
+                Creature = new Pokemon() { ID = 1 };
+                PokemonType = "Unknown";
+                SpriteURL = "";
+            }
 
             PressedA = new RelayCommand(NextPokemon);
             PressedB = new RelayCommand(PreviousPokemon);
@@ -32,6 +42,7 @@ namespace Pokedex.ViewModels
 
             Creature = App.Servicer.getAPokemon(_index);
             PokemonType = App.Servicer.getPokemonTypeClass(_index);
+            SpriteURL = Creature.Sprite;
         }
 
         public void PreviousPokemon()
@@ -43,6 +54,7 @@ namespace Pokedex.ViewModels
 
             Creature = App.Servicer.getAPokemon(_index);
             PokemonType = App.Servicer.getPokemonTypeClass(_index);
+            SpriteURL = Creature.Sprite;
         }
 
         /// <summary>
@@ -65,6 +77,8 @@ namespace Pokedex.ViewModels
 
             Creature = App.Servicer.getAPokemon(results[0].ID);
             PokemonType = results[0].TypeName;
+            SpriteURL = Creature.Sprite;
+
             _index = results[0].ID;
 
             Suggestions = results;
@@ -127,6 +141,18 @@ namespace Pokedex.ViewModels
             set
             {
                 SetProperty(ref _pokemon, value, nameof(Creature));
+            }
+        }
+        private string _spriteURL;
+        public string SpriteURL
+        {
+            get
+            {
+                return _spriteURL;
+            }
+            set
+            {
+                SetProperty(ref _spriteURL, value, nameof(SpriteURL));
             }
         }
     }

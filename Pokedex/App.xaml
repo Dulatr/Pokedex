@@ -4,4 +4,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Pokedex">
 
+    <Application.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="CornerRadius" Value="30"/>
+        </Style>
+
+        <Style TargetType="StackPanel">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Application.Resources>
+    
 </Application>
