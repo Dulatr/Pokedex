@@ -99,23 +99,6 @@ namespace Pokedex.DAO
             return pokeList;
         }
 
-        public string getSprite(int ID = 0)
-        {
-            //if (ID == 0)
-            //{
-            //    return "";
-            //}
-
-            //var _pokemonResource = ApiClient.GetResourceAsync<PokeApiNet.Pokemon>(ID);
-            //var results = _pokemonResource.Result;
-            //var sprites = results.Sprites;
-            //string url = sprites.FrontDefault;
-            //if (_pokemonResource != null)
-            //    return _pokemonResource.Result.Sprites.FrontDefault;
-
-            return "Assets/fatpikachu.jpg";
-        }
-
         /// <summary>
         /// Return the type identifier of a pokemon with given ID. 
         /// No ID provided will return empty string.
