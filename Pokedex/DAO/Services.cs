@@ -147,15 +147,17 @@ namespace Pokedex.DAO
             DB.CreateTable<Models.Pokemon>();
             DB.CreateTable<Models.PokemonTypes>();
             DB.CreateTable<Models.Types>();
-
+            
             // Get all pokemon from api
             if (DB.Query<Models.Pokemon>("SELECT * FROM pokemon").Count == 0)
             {
                 var _pokemonResources = await ApiClient.GetNamedResourcePageAsync<PokeApiNet.Pokemon>(151,0);
+                List<Models.Pokemon> _creatures = new List<Models.Pokemon>();
+
                 foreach (var _url in _pokemonResources.Results)
                 {
                     var _creature = await ApiClient.GetResourceAsync(_url);
-                    DB.Insert(new Models.Pokemon()
+                    _creatures.Add(new Models.Pokemon()
                     {
                         Identifier = _creature.Name,
                         Species_id = _creature.Id,
@@ -166,13 +168,16 @@ namespace Pokedex.DAO
                         Is_Default = _creature.IsDefault,
                         Sprite = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{_creature.Id}.png"
                     });                    
-                }                 
+                }
+                DB.InsertAll(_creatures);
             }
 
             // Obtain possible types 
             if (DB.Query<Models.Types>("SELECT * FROM types").Count == 0)
             {
                 var _typeResources = await ApiClient.GetNamedResourcePageAsync<PokeApiNet.Type>();
+                List<Models.Types> _types = new List<Types>();
+
                 foreach (var _url in _typeResources.Results)
                 {
                     var _type = await ApiClient.GetResourceAsync(_url);
@@ -189,7 +194,7 @@ namespace Pokedex.DAO
                     else
                         _dmg_Class = await ApiClient.GetResourceAsync(_type.MoveDamageClass);              
 
-                    DB.Insert(new Models.Types()
+                    _types.Add(new Models.Types()
                     {
                         ID = _type.Id,
                         Identifier = _type.Name,
@@ -197,6 +202,8 @@ namespace Pokedex.DAO
                         Damage_Class_ID = _dmg_Class == null ? -1 : _dmg_Class.Id
                     });
                 }
+
+                DB.InsertAll(_types);
             }
 
             // Obtain a list of pokemon id's with their associated types
@@ -204,6 +211,8 @@ namespace Pokedex.DAO
             // to grab the PokemonType resources directly.
             if (DB.Query<Models.PokemonTypes>("SELECT * FROM pokemon_types").Count == 0)
             {
+                List<Models.PokemonTypes> _pokemonTypeList = new List<PokemonTypes>();
+
                 foreach (Models.Pokemon pokemon in DB.Query<Models.Pokemon>("SELECT * FROM pokemon"))
                 {
                     var _pokemonResources = await ApiClient.GetResourceAsync<PokeApiNet.Pokemon>(pokemon.ID);
@@ -211,7 +220,7 @@ namespace Pokedex.DAO
                     foreach (var _type in _pokemonTypes)
                     {
                         var _typeInfo = await ApiClient.GetResourceAsync<PokeApiNet.Type>(_type.Type);
-                        DB.Insert(new Models.PokemonTypes()
+                        _pokemonTypeList.Add(new Models.PokemonTypes()
                         {
                             Pokemon_ID = pokemon.ID,
                             Type_ID = _typeInfo.Id,
@@ -219,6 +228,8 @@ namespace Pokedex.DAO
                         });
                     }
                 }
+
+                DB.InsertAll(_pokemonTypeList);
             }
         }
 
