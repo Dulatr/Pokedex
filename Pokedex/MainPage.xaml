@@ -35,14 +35,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
-        <controls:Loading Grid.ColumnSpan="10" Grid.RowSpan="10"
-                          IsLoading="{Binding IsBusy}"
-                          Background="DarkGoldenrod"
-                          Opacity="0.15" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-            <Image Source="Assets/fatpikachu.jpg"/>
-        </controls:Loading>
-        
+ 
         <!-- Text Search box -->
         <Viewbox Grid.Column="3" Grid.ColumnSpan="4"
                  Stretch="Uniform"
@@ -115,6 +108,27 @@
                  Margin="14">
             <Button x:Name="B_Button" Command="{Binding PressedB}">B</Button>
         </Viewbox>
+
+        <!-- Loading Splash -->
+        <controls:Loading Grid.ColumnSpan="10" Grid.RowSpan="10"
+                          IsLoading="{Binding IsBusy}"
+                          Background="DarkGoldenrod"
+                          Opacity="0.85" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Viewbox Stretch="Uniform" 
+                         HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressRing IsActive="True" Foreground="White"/>
+                </Viewbox>
+                <Viewbox Stretch="Uniform" Grid.Row="1">
+                    <TextBlock Text="{Binding LoadStatus}" Padding="30"/>
+                </Viewbox>
+                
+            </Grid>
+        </controls:Loading>        
         
     </Grid>
 

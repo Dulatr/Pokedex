@@ -15,19 +15,6 @@ namespace Pokedex.ViewModels
 
         public MainPageVM()
         {
-            try
-            {
-                Creature = App.Servicer.getAPokemon(_index);
-                PokemonType = App.Servicer.getPokemonTypeClass(_index);
-                SpriteURL = Creature.Sprite;
-            }
-            catch
-            {
-                Creature = new Pokemon() { ID = 1 };
-                PokemonType = "Unknown";
-                SpriteURL = "";
-            }
-
             PressedA = new RelayCommand(NextPokemon);
             PressedB = new RelayCommand(PreviousPokemon);
 
@@ -36,7 +23,19 @@ namespace Pokedex.ViewModels
                 (r, msg) => 
                 {
                     IsBusy = msg.Value;
+
+                    if (IsBusy == false && _firstLoad)
+                    {
+                        Creature = App.Servicer.getAPokemon(_index);
+                        PokemonType = App.Servicer.getPokemonTypeClass(_index);
+                        SpriteURL = Creature.Sprite;
+                        _firstLoad = !_firstLoad;
+                    }
                 }
+            );
+
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>>(this,
+                (r,msg) => { LoadStatus = msg.Value; }
             );
         }
 
@@ -95,7 +94,14 @@ namespace Pokedex.ViewModels
         }
 
         private int _index = 1;
+        private bool _firstLoad = true;
 
+        private string _loadStatus = "Starting up the program";
+        public string LoadStatus
+        {
+            get { return _loadStatus; }
+            set { SetProperty(ref _loadStatus, value, nameof(LoadStatus)); }
+        }
         private bool _isBusy = false;
         public bool IsBusy
         {

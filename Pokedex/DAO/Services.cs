@@ -149,12 +149,14 @@ namespace Pokedex.DAO
         {
             // Tell pages that the servicer is currently busy
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true));
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Creating tables.."));
 
             DB.CreateTable<Models.Pokemon>();
             DB.CreateTable<Models.PokemonTypes>();
             DB.CreateTable<Models.Types>();
-            
+
             // Get all pokemon from api
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Catching all da pokemans..."));
             if (DB.Query<Models.Pokemon>("SELECT * FROM pokemon").Count == 0)
             {
                 var _pokemonResources = await ApiClient.GetNamedResourcePageAsync<PokeApiNet.Pokemon>(151,0);
@@ -179,6 +181,7 @@ namespace Pokedex.DAO
             }
 
             // Obtain possible types 
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Checking what type of pokemans u dun caught..."));
             if (DB.Query<Models.Types>("SELECT * FROM types").Count == 0)
             {
                 var _typeResources = await ApiClient.GetNamedResourcePageAsync<PokeApiNet.Type>();
@@ -215,6 +218,7 @@ namespace Pokedex.DAO
             // Obtain a list of pokemon id's with their associated types
             // This part is a bit messy due to the Api not allowing 
             // to grab the PokemonType resources directly.
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Linking the types to yo pokedex..."));
             if (DB.Query<Models.PokemonTypes>("SELECT * FROM pokemon_types").Count == 0)
             {
                 List<Models.PokemonTypes> _pokemonTypeList = new List<PokemonTypes>();
@@ -239,6 +243,7 @@ namespace Pokedex.DAO
             }
 
             // Message to all that operation is finished
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Finished"));
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false));
         }
 
