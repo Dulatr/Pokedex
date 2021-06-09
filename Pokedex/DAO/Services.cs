@@ -4,9 +4,12 @@ using System.Collections.Generic;
 // Installed References
 using SQLite;
 using PokeApiNet;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 // Local References
 using Pokedex.Models;
+
 
 namespace Pokedex.DAO
 {
@@ -143,7 +146,10 @@ namespace Pokedex.DAO
         /// filled database.
         /// </summary>
         public async void InitializeTables()
-        { 
+        {
+            // Tell pages that the servicer is currently busy
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true));
+
             DB.CreateTable<Models.Pokemon>();
             DB.CreateTable<Models.PokemonTypes>();
             DB.CreateTable<Models.Types>();
@@ -231,6 +237,9 @@ namespace Pokedex.DAO
 
                 DB.InsertAll(_pokemonTypeList);
             }
+
+            // Message to all that operation is finished
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false));
         }
 
         /// <summary>

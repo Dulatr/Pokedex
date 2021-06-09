@@ -3,6 +3,8 @@ using System.Windows.Input;
 
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using Pokedex.Models;
 using Windows.UI.Xaml.Controls;
 
@@ -28,6 +30,14 @@ namespace Pokedex.ViewModels
 
             PressedA = new RelayCommand(NextPokemon);
             PressedB = new RelayCommand(PreviousPokemon);
+
+            // Register the VM as a recipient
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>>(this, 
+                (r, msg) => 
+                {
+                    IsBusy = msg.Value;
+                }
+            );
         }
 
         public RelayCommand PressedA { get; set; }
@@ -85,6 +95,13 @@ namespace Pokedex.ViewModels
         }
 
         private int _index = 1;
+
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value, nameof(IsBusy)); }
+        }
 
         private string _searchString;
         public string SearchString

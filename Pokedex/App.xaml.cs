@@ -21,6 +21,7 @@ using SQLite;
 // Local References
 using Pokedex.DAO;
 
+
 namespace Pokedex
 {
     /// <summary>

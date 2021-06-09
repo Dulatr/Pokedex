@@ -36,6 +36,13 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <controls:Loading Grid.ColumnSpan="10" Grid.RowSpan="10"
+                          IsLoading="{Binding IsBusy}"
+                          Background="DarkGoldenrod"
+                          Opacity="0.15" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <Image Source="Assets/fatpikachu.jpg"/>
+        </controls:Loading>
+        
         <!-- Text Search box -->
         <Viewbox Grid.Column="3" Grid.ColumnSpan="4"
                  Stretch="Uniform"
@@ -57,12 +64,6 @@
         <!-- Pokemon View -->
         <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6"
                  Margin="7">
-            <!--<controls:TileControl ImageSource="Assets/fatpikachu.jpg"
-                                  IsAnimated="True">
-                <FlipView>
-                    <Border/>
-                </FlipView>
-            </controls:TileControl>-->
             <Image Source="{Binding SpriteURL}"/>
         </Viewbox>
 
