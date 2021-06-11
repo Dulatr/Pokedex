@@ -35,7 +35,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
- 
+
         <!-- Text Search box -->
         <Viewbox Grid.Column="3" Grid.ColumnSpan="4"
                  Stretch="Uniform"
@@ -77,7 +77,7 @@
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Base Experience: 
+                        Base Experience:
                     </controls:HeaderedContentControl.Header>
                     <TextBlock Text="{Binding Creature.Base_Experience}"/>
                 </controls:HeaderedContentControl>
@@ -91,22 +91,51 @@
         </Viewbox>
 
         <!-- D-Pad -->
-        <Viewbox Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            
-        </Viewbox>
+        <Grid Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="5" HorizontalAlignment="Stretch" Margin="75,50,75,50" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button x:Name="DPadUp"
+                    Grid.Column="1" Grid.Row="0"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedUp}" CommandParameter="Up">
+            </Button>
+            <Button x:Name="DPadLeft"
+                    Grid.Column="0" Grid.Row="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedLeft}" CommandParameter="Left">
+            </Button>
+            <Button x:Name="DPadRight"
+                    Grid.Column="2" Grid.Row="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedRight}" CommandParameter="Right">
+            </Button>
+            <Button x:Name="DPadDown"
+                    Grid.Column="1" Grid.Row="2"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedDown}" CommandParameter="Down">
+            </Button>
+        </Grid>
 
         <!-- A Button -->
-        <Viewbox Grid.Column="8" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
+        <Viewbox Grid.Column="8" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2"
                  Stretch="Uniform"
                  Margin="14">
-            <Button x:Name="A_Button" Command="{Binding PressedA}">A</Button>
+            <Button x:Name="A_Button" Command="{Binding PressedA}" CommandParameter="A">A</Button>
         </Viewbox>
-        
+
         <!-- B-Button -->
-        <Viewbox Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="2"
+        <Viewbox Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="2"
                  Stretch="Uniform"
-                 Margin="14">
-            <Button x:Name="B_Button" Command="{Binding PressedB}">B</Button>
+                 Margin="75,0,100,28" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button x:Name="B_Button" Command="{Binding PressedB}" CommandParameter="B">B</Button>
         </Viewbox>
 
         <!-- Loading Splash -->
@@ -126,10 +155,9 @@
                 <Viewbox Stretch="Uniform" Grid.Row="1">
                     <TextBlock Text="{Binding LoadStatus}" Padding="30"/>
                 </Viewbox>
-                
             </Grid>
-        </controls:Loading>        
-        
+        </controls:Loading>
+
     </Grid>
 
 </Page>
