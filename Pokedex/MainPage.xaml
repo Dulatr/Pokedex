@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPressedForegroundThemeBrush}">
+    Background="#CC0000">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -56,8 +56,12 @@
 
         <!-- Pokemon View -->
         <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6"
-                 Margin="7">
-            <Image Source="{Binding SpriteURL}"/>
+                 Margin="7" Stretch="Uniform">
+            <Border BorderBrush="Black" BorderThickness="1"
+                    Background="FloralWhite" MinWidth="120" MinHeight="120"
+                    CornerRadius="3.5">
+                <Image Source="{Binding SpriteURL}"/>
+            </Border>
         </Viewbox>
 
         <!-- Pokemon Information  -->
