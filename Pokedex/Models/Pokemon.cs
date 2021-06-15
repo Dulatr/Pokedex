@@ -41,5 +41,8 @@ namespace Pokedex.Models
         [NotNull]
         [Column("is_default")]
         public bool Is_Default { get; set; }
+
+        [Column("sprite")]
+        public string Sprite { get; set; }
     }
 }

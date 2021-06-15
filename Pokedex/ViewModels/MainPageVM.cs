@@ -3,6 +3,8 @@ using System.Windows.Input;
 
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using Pokedex.Models;
 using Windows.UI.Xaml.Controls;
 
@@ -13,15 +15,56 @@ namespace Pokedex.ViewModels
 
         public MainPageVM()
         {
-            Creature = App.Servicer.getAPokemon(_index);
-            PokemonType = App.Servicer.getPokemonTypeClass(_index);
+            PressedA = new RelayCommand<string>((sender) =>
+            {
+                NextPokemon();
+                ButtonPress(sender);
+            });
+            PressedB = new RelayCommand<string>((sender) =>
+            {
+                PreviousPokemon();
+                ButtonPress(sender);
+            });
+            PressedUp = new RelayCommand<string>(ButtonPress);
+            PressedDown = new RelayCommand<string>(ButtonPress);
+            PressedLeft = new RelayCommand<string>((sender) => 
+            {
+                PreviousPokemon();
+                ButtonPress(sender);
+            });
+            PressedRight = new RelayCommand<string>((sender) =>
+            {
+                NextPokemon();
+                ButtonPress(sender);
+            });
 
-            PressedA = new RelayCommand(NextPokemon);
-            PressedB = new RelayCommand(PreviousPokemon);
+            // Register the VM as a recipient
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>>(this, 
+                (r, msg) => 
+                {
+                    IsBusy = msg.Value;
+
+                    if (IsBusy == false && _firstLoad)
+                    {
+                        Creature = App.Servicer.getAPokemon(_index);
+                        PokemonType = App.Servicer.getPokemonTypeClass(_index);
+                        SpriteURL = Creature.Sprite;
+                        _firstLoad = !_firstLoad;
+                    }
+                }
+            );
+
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>>(this,
+                (r,msg) => { LoadStatus = msg.Value; }
+            );
         }
 
-        public RelayCommand PressedA { get; set; }
-        public RelayCommand PressedB { get; set; }
+        public RelayCommand<string> PressedUp { get; set; }
+        public RelayCommand<string> PressedDown { get; set; }
+        public RelayCommand<string> PressedLeft { get; set; }
+        public RelayCommand<string> PressedRight { get; set; }
+        public RelayCommand<string> PressedA { get; set; }
+        public RelayCommand<string> PressedB { get; set; }
 
         public void NextPokemon()
         {
@@ -32,6 +75,7 @@ namespace Pokedex.ViewModels
 
             Creature = App.Servicer.getAPokemon(_index);
             PokemonType = App.Servicer.getPokemonTypeClass(_index);
+            SpriteURL = Creature.Sprite;
         }
 
         public void PreviousPokemon()
@@ -43,6 +87,16 @@ namespace Pokedex.ViewModels
 
             Creature = App.Servicer.getAPokemon(_index);
             PokemonType = App.Servicer.getPokemonTypeClass(_index);
+            SpriteURL = Creature.Sprite;
+        }
+
+        public void ButtonPress(string sender)
+        {
+            if (CommandHistory.Count == 10 && CommandHistory.Count != 0)
+            {
+                CommandHistory.Dequeue();
+            }
+            CommandHistory.Enqueue(sender);
         }
 
         /// <summary>
@@ -65,12 +119,29 @@ namespace Pokedex.ViewModels
 
             Creature = App.Servicer.getAPokemon(results[0].ID);
             PokemonType = results[0].TypeName;
+            SpriteURL = Creature.Sprite;
+
             _index = results[0].ID;
 
             Suggestions = results;
         }
 
         private int _index = 1;
+
+        private bool _firstLoad = true;
+
+        private string _loadStatus = "Starting up the program";
+        public string LoadStatus
+        {
+            get { return _loadStatus; }
+            set { SetProperty(ref _loadStatus, value, nameof(LoadStatus)); }
+        }
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value, nameof(IsBusy)); }
+        }
 
         private string _searchString;
         public string SearchString
@@ -100,7 +171,7 @@ namespace Pokedex.ViewModels
                 SetProperty(ref _suggestions, value, nameof(Suggestions));
             }
         }
-
+        
         private string _pokemonType;
         public string PokemonType
         {
@@ -127,6 +198,31 @@ namespace Pokedex.ViewModels
             set
             {
                 SetProperty(ref _pokemon, value, nameof(Creature));
+            }
+        }
+        private string _spriteURL;
+        public string SpriteURL
+        {
+            get
+            {
+                return _spriteURL;
+            }
+            set
+            {
+                SetProperty(ref _spriteURL, value, nameof(SpriteURL));
+            }
+        }
+
+        private Queue<string> _commandHistory = new Queue<string>(10);
+        public Queue<string> CommandHistory
+        {
+            get
+            {
+                return _commandHistory;
+            }
+            set
+            {
+                SetProperty(ref _commandHistory, value, nameof(CommandHistory));
             }
         }
     }

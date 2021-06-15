@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="#CC0000">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -53,69 +53,118 @@
                 </AutoSuggestBox.ItemTemplate>
             </AutoSuggestBox>
         </Viewbox>
-        
-        <!-- Search Button -->
-        <!--<Viewbox Grid.Column="7"
-                 Stretch="Uniform"
-                 Margin="0 14 0 14">
-            <Button x:Name="SearchButton" Command="{Binding PressedSearch}">Search</Button>
-        </Viewbox>-->
-        
+
         <!-- Pokemon View -->
-        <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6">
-            <controls:TileControl>
-            </controls:TileControl>
+        <Viewbox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6"
+                 Margin="7" Stretch="Uniform">
+            <Border BorderBrush="Black" BorderThickness="1"
+                    Background="FloralWhite" MinWidth="120" MinHeight="120"
+                    CornerRadius="3.5">
+                <controls:DropShadowPanel BlurRadius="4" ShadowOpacity=".5"
+                                          Color="Black" OffsetX="7" OffsetY="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding SpriteURL}"/>
+                </controls:DropShadowPanel>
+            </Border>
         </Viewbox>
 
         <!-- Pokemon Information  -->
-        <Viewbox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="3">
+        <Viewbox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="14">
             <StackPanel>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Name:
+                        <TextBlock Text="Name:" Padding="40 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding Creature.Identifier}"/>
+                    <TextBlock Text="{Binding Creature.Identifier}" Padding="7 7 0 0"/>
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        ID:
+                        <TextBlock Text="ID:" Padding="64 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding Creature.ID}"/>
+                    <TextBlock Text="{Binding Creature.ID}" Padding="7 7 0 0"/>
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Base Experience: 
+                        <TextBlock Text="Base XP:" Padding="29 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding Creature.Base_Experience}"/>
+                    <TextBlock Text="{Binding Creature.Base_Experience}" Padding="7 7 0 0"/>
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Type:
+                        <TextBlock Text="Type:" Padding="48 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding PokemonType}"/>
+                    <TextBlock Text="{Binding PokemonType}" Padding="4 7 0 7"/>
                 </controls:HeaderedContentControl>
             </StackPanel>
         </Viewbox>
 
         <!-- D-Pad -->
-        <Viewbox Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            
-        </Viewbox>
+        <Grid Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="5" HorizontalAlignment="Stretch" Margin="75,50,75,50" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button x:Name="DPadUp"
+                    Grid.Column="1" Grid.Row="0"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedUp}" CommandParameter="Up">
+            </Button>
+            <Button x:Name="DPadLeft"
+                    Grid.Column="0" Grid.Row="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedLeft}" CommandParameter="Left">
+            </Button>
+            <Button x:Name="DPadRight"
+                    Grid.Column="2" Grid.Row="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedRight}" CommandParameter="Right">
+            </Button>
+            <Button x:Name="DPadDown"
+                    Grid.Column="1" Grid.Row="2"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Command="{Binding PressedDown}" CommandParameter="Down">
+            </Button>
+        </Grid>
 
         <!-- A Button -->
-        <Viewbox Grid.Column="8" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
+        <Viewbox Grid.Column="8" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2"
                  Stretch="Uniform"
-                 Margin="14">
-            <Button x:Name="A_Button" Command="{Binding PressedA}">A</Button>
+                 Margin="14 14 14 14">
+            <Button x:Name="A_Button" Command="{Binding PressedA}" CommandParameter="A">A</Button>
         </Viewbox>
-        
+
         <!-- B-Button -->
-        <Viewbox Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="2"
+        <Viewbox Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="2"
                  Stretch="Uniform"
-                 Margin="14">
-            <Button x:Name="B_Button" Command="{Binding PressedB}">B</Button>
+                 Margin="21,0,100,28" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button x:Name="B_Button" Command="{Binding PressedB}" CommandParameter="B">B</Button>
         </Viewbox>
-        
+
+        <!-- Loading Splash -->
+        <controls:Loading Grid.ColumnSpan="10" Grid.RowSpan="10"
+                          IsLoading="{Binding IsBusy}"
+                          Background="DarkGoldenrod"
+                          Opacity="0.85" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Viewbox Stretch="Uniform" 
+                         HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressRing IsActive="True" Foreground="White"/>
+                </Viewbox>
+                <Viewbox Stretch="Uniform" Grid.Row="1">
+                    <TextBlock Text="{Binding LoadStatus}" Padding="30"/>
+                </Viewbox>
+            </Grid>
+        </controls:Loading>
+
     </Grid>
 
 </Page>

@@ -4,9 +4,12 @@ using System.Collections.Generic;
 // Installed References
 using SQLite;
 using PokeApiNet;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 
 // Local References
 using Pokedex.Models;
+
 
 namespace Pokedex.DAO
 {
@@ -127,7 +130,7 @@ namespace Pokedex.DAO
                    WHERE pokemon.id={ID};"
             );
 
-            if (typeClass == null)
+            if (typeClass == null || typeClass.Count == 0)
                 return "";
             else if (typeClass.Count > 1)
                 return $" {typeClass[0].Identifier} / {typeClass[1].Identifier}";
@@ -143,19 +146,26 @@ namespace Pokedex.DAO
         /// filled database.
         /// </summary>
         public async void InitializeTables()
-        { 
+        {
+            // Tell pages that the servicer is currently busy
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true));
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Creating tables.."));
+
             DB.CreateTable<Models.Pokemon>();
             DB.CreateTable<Models.PokemonTypes>();
             DB.CreateTable<Models.Types>();
 
             // Get all pokemon from api
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Catching all da pokemans..."));
             if (DB.Query<Models.Pokemon>("SELECT * FROM pokemon").Count == 0)
             {
                 var _pokemonResources = await ApiClient.GetNamedResourcePageAsync<PokeApiNet.Pokemon>(151,0);
+                List<Models.Pokemon> _creatures = new List<Models.Pokemon>();
+
                 foreach (var _url in _pokemonResources.Results)
                 {
                     var _creature = await ApiClient.GetResourceAsync(_url);
-                    DB.Insert(new Models.Pokemon()
+                    _creatures.Add(new Models.Pokemon()
                     {
                         Identifier = _creature.Name,
                         Species_id = _creature.Id,
@@ -163,15 +173,20 @@ namespace Pokedex.DAO
                         Weight = _creature.Weight,
                         Base_Experience = _creature.BaseExperience,
                         Order = _creature.Order,
-                        Is_Default = _creature.IsDefault
+                        Is_Default = _creature.IsDefault,
+                        Sprite = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{_creature.Id}.png"
                     });                    
-                }                 
+                }
+                DB.InsertAll(_creatures);
             }
 
             // Obtain possible types 
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Checking what type of pokemans u dun caught..."));
             if (DB.Query<Models.Types>("SELECT * FROM types").Count == 0)
             {
                 var _typeResources = await ApiClient.GetNamedResourcePageAsync<PokeApiNet.Type>();
+                List<Models.Types> _types = new List<Types>();
+
                 foreach (var _url in _typeResources.Results)
                 {
                     var _type = await ApiClient.GetResourceAsync(_url);
@@ -188,7 +203,7 @@ namespace Pokedex.DAO
                     else
                         _dmg_Class = await ApiClient.GetResourceAsync(_type.MoveDamageClass);              
 
-                    DB.Insert(new Models.Types()
+                    _types.Add(new Models.Types()
                     {
                         ID = _type.Id,
                         Identifier = _type.Name,
@@ -196,13 +211,18 @@ namespace Pokedex.DAO
                         Damage_Class_ID = _dmg_Class == null ? -1 : _dmg_Class.Id
                     });
                 }
+
+                DB.InsertAll(_types);
             }
 
             // Obtain a list of pokemon id's with their associated types
             // This part is a bit messy due to the Api not allowing 
             // to grab the PokemonType resources directly.
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Linking the types to yo pokedex..."));
             if (DB.Query<Models.PokemonTypes>("SELECT * FROM pokemon_types").Count == 0)
             {
+                List<Models.PokemonTypes> _pokemonTypeList = new List<PokemonTypes>();
+
                 foreach (Models.Pokemon pokemon in DB.Query<Models.Pokemon>("SELECT * FROM pokemon"))
                 {
                     var _pokemonResources = await ApiClient.GetResourceAsync<PokeApiNet.Pokemon>(pokemon.ID);
@@ -210,7 +230,7 @@ namespace Pokedex.DAO
                     foreach (var _type in _pokemonTypes)
                     {
                         var _typeInfo = await ApiClient.GetResourceAsync<PokeApiNet.Type>(_type.Type);
-                        DB.Insert(new Models.PokemonTypes()
+                        _pokemonTypeList.Add(new Models.PokemonTypes()
                         {
                             Pokemon_ID = pokemon.ID,
                             Type_ID = _typeInfo.Id,
@@ -218,7 +238,13 @@ namespace Pokedex.DAO
                         });
                     }
                 }
+
+                DB.InsertAll(_pokemonTypeList);
             }
+
+            // Message to all that operation is finished
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>("Finished"));
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false));
         }
 
         /// <summary>
