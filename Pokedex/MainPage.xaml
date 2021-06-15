@@ -65,31 +65,31 @@
         </Viewbox>
 
         <!-- Pokemon Information  -->
-        <Viewbox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="3">
+        <Viewbox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="14">
             <StackPanel>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Name:
+                        <TextBlock Text="Name:" Padding="40 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding Creature.Identifier}"/>
+                    <TextBlock Text="{Binding Creature.Identifier}" Padding="7 7 0 0"/>
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        ID:
+                        <TextBlock Text="ID:" Padding="64 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding Creature.ID}"/>
+                    <TextBlock Text="{Binding Creature.ID}" Padding="7 7 0 0"/>
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Base Experience:
+                        <TextBlock Text="Base XP:" Padding="29 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding Creature.Base_Experience}"/>
+                    <TextBlock Text="{Binding Creature.Base_Experience}" Padding="7 7 0 0"/>
                 </controls:HeaderedContentControl>
                 <controls:HeaderedContentControl Orientation="Horizontal">
                     <controls:HeaderedContentControl.Header>
-                        Type:
+                        <TextBlock Text="Type:" Padding="48 7 0 0"/>
                     </controls:HeaderedContentControl.Header>
-                    <TextBlock Text="{Binding PokemonType}"/>
+                    <TextBlock Text="{Binding PokemonType}" Padding="4 7 0 7"/>
                 </controls:HeaderedContentControl>
             </StackPanel>
         </Viewbox>
@@ -131,14 +131,14 @@
         <!-- A Button -->
         <Viewbox Grid.Column="8" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2"
                  Stretch="Uniform"
-                 Margin="14">
+                 Margin="14 14 14 14">
             <Button x:Name="A_Button" Command="{Binding PressedA}" CommandParameter="A">A</Button>
         </Viewbox>
 
         <!-- B-Button -->
         <Viewbox Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="2"
                  Stretch="Uniform"
-                 Margin="75,0,100,28" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                 Margin="21,0,100,28" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Button x:Name="B_Button" Command="{Binding PressedB}" CommandParameter="B">B</Button>
         </Viewbox>
 
