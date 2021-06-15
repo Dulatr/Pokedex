@@ -60,7 +60,10 @@
             <Border BorderBrush="Black" BorderThickness="1"
                     Background="FloralWhite" MinWidth="120" MinHeight="120"
                     CornerRadius="3.5">
-                <Image Source="{Binding SpriteURL}"/>
+                <controls:DropShadowPanel BlurRadius="4" ShadowOpacity=".5"
+                                          Color="Black" OffsetX="7" OffsetY="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding SpriteURL}"/>
+                </controls:DropShadowPanel>
             </Border>
         </Viewbox>
 
