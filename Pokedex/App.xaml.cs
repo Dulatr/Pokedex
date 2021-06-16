@@ -54,6 +54,7 @@ namespace Pokedex
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+                rootFrame.CornerRadius = new CornerRadius(90);
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
